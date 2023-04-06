@@ -13,10 +13,15 @@ export class DashboardComponent {
   }
 
   ngOnInit(){
-    this.getCommandes();
+    this.getCommandes()
   }
 
+  editForm = false
+  searchNomClient = ''
+  showForm = false
+
   commandes: Commande[] = [];
+
   myCommande: Commande = {
       boisson: '',
       numeroTable: 0,
@@ -24,34 +29,59 @@ export class DashboardComponent {
       payee: false
   }
 
-  togglePayee(id: any, payee: any){
-
-  }
+  resultCommandes: Commande[] = []
 
   getCommandes() {
-    this.dashboardService.findAll().subscribe(commandes => this.commandes = commandes)
+    this.dashboardService.findAll().subscribe(commandes => {
+        this.resultCommandes = this.commandes = commandes
+      })
   }
 
   deleteCommande(id: any) {
-    this.dashboardService.delete(id).subscribe( () => {
+    this.dashboardService.delete(id).subscribe(() => {
       this.commandes = this.commandes.filter(commande => commande.id != id)
+      this.ngOnInit()
     })
   }
 
-  persistCommande () {
-    this.dashboardService.persist(this.myCommande)
-    .subscribe((commande) =>{
-      this.commandes = [commande, ...this.commandes];
-      this.resetCommande();
-    } 
-      )}
+  persistCommande() {
+    this.dashboardService.persist(this.myCommande).subscribe((commande) => {
+      this.commandes = [commande, ...this.commandes]
+      this.resetCommande()
+      this.showForm = false
+      this.ngOnInit()
 
-  resetCommande(){
+    })
+  }
+
+  resetCommande() {
     this.myCommande = {
       boisson: '',
       numeroTable: 0,
       nomClient: '',
       payee: false
     }
-  }    
+  }
+
+  editCommande(commande: any) {
+    this.myCommande = commande
+    this.editForm = true
+    // this.ngOnInit()
+
+  }
+
+  updateCommande() {
+    this.dashboardService.update(this.myCommande).subscribe(commande => {
+      this.resetCommande();
+      this.editForm = false
+      this.ngOnInit()
+    })
+  }
+
+  searchClient() {
+    this.resultCommandes = this.commandes.filter(commande =>
+      commande.nomClient.toLowerCase().includes(this.searchNomClient.toLowerCase())
+      )
+  }
+
 }

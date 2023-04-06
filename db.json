@@ -1,0 +1,25 @@
+{
+  "commandes": [
+    {
+      "id": 2,
+      "boisson": "Jus d'orange.",
+      "numeroTable": 2,
+      "nomClient": "Karim",
+      "payee": false
+    },
+    {
+      "boisson": "Hawai",
+      "numeroTable": "5",
+      "nomClient": "",
+      "payee": true,
+      "id": 3
+    },
+    {
+      "boisson": "Jus de pomme",
+      "numeroTable": "2",
+      "nomClient": "Ali",
+      "payee": true,
+      "id": 4
+    }
+  ]
+}
